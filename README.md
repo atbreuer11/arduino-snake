@@ -12,3 +12,10 @@ Here is the schematic, the wires on the right would connect to the 8x8 led array
 
 ![Schematic]
 (https://github.com/atbreuer11/arduino-snake/blob/master/schematic.png)
+
+
+
+And here is the game in action:
+
+![Snake Game]
+(https://github.com/atbreuer11/arduino-snake/blob/master/snake-game.JPG)
