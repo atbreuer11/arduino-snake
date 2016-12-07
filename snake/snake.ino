@@ -1,19 +1,17 @@
 #include <LedControl.h>
 
-int x[64], y[64];
-int dots = 2;
-
-int DIN = 12;
+int DIN = 12;   // Pins for the led matrix
 int CS =  11;
 int CLK = 10;
 
-int xPosition, yPosition = 0;
+int x[64], y[64];
+int dots = 2;
+int xPosition, yPosition = 0;   // Snake game variables
 int foodX, foodY;
-
 int direction = 1;
 int gameRunning = 1;
 
-LedControl lc = LedControl(DIN,CLK,CS,1);
+LedControl lc = LedControl(DIN,CLK,CS,1);   // Facilitates control of leds
 
 void setup() {
 
@@ -24,11 +22,11 @@ void setup() {
   
   lc.shutdown(0, false);       // The MAX72XX is in power-saving mode on startup
   lc.setIntensity(0, 15);      // Set the brightness to maximum value
-  lc.clearDisplay(0);
+  lc.clearDisplay(0);          // Clear display to start
 
   randomSeed(analogRead(A4));
 
-  for (int i = 0; i < dots; i++) {
+  for (int i = 0; i < dots; i++) {    // Intitiate the snake with given length
     x[i] = 1 + i;
     y[i] = 1;
   }
@@ -45,14 +43,16 @@ void loop() {
     readJoystick();
   }
 
-  delay(500 - 10*dots);
+  delay(500 - 10*dots);   // Increase speed as game goes on
 }
 
 void readJoystick() {
   
+  // Fetch joysticks position
   xPosition = analogRead(A0);
   yPosition = analogRead(A1);
 
+  // Determine direction 
   if (xPosition > 750 and direction != 2) {
     direction = 1; // Right
    
@@ -98,16 +98,20 @@ void moveSnake() {
 
 void renderMap() {
 
+  // Check if gameover
   youLose();
 
+  // If not, keep going
   if (gameRunning == 1) {
     lc.clearDisplay(0);
     lc.setLed(0,foodY,foodX, true);
 
     for (int i = 0; i < dots; i++) {
-    
+
+      // Draw the snake
       lc.setLed(0,y[i],x[i], true);
-    
+
+      // Increase snake length if it eats food
       if (x[i] == foodX and y[i] == foodY) {
         dots = dots + 1;
         spawnFood();
